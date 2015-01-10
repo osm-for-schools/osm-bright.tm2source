@@ -138,6 +138,69 @@ Layer:
       "buffer-size": 8
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
 
+  - id: tunnel
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          select geometry, osm_id, oneway, layer, type, 'motorway' as class from
+            osm_roads where tunnel = 1 and type in ('motorway')
+          union all
+          select geometry, osm_id, oneway, layer, type, 'motorway_link' as class from
+            osm_roads where tunnel = 1 and type in ('motorway_link')
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where tunnel = 1 and type in ('primary',
+            'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'trunk', 'trunk_link')
+          union all
+          select geometry, osm_id, oneway, layer, type, 'street' as class from
+            osm_roads where tunnel = 1 and type in ('residential',
+            'unclassified', 'living_street')
+          union all
+          select geometry, osm_id, oneway, layer, type, 'street_limited' as class from
+            osm_roads where tunnel = 1 and (type in ('pedestrian',
+            'construction') or access = 'private')
+          union all
+          select geometry, osm_id, oneway, layer, type, 'service' as class from
+            osm_roads where tunnel = 1 and type in ('service',
+            'track')
+          union all
+          select geometry, osm_id, oneway, layer, type, 'driveway' as class from
+            osm_roads where tunnel = 1 and type in ('driveway')
+          union all
+          select geometry, osm_id, oneway, layer, type, 'path' as class from
+            osm_roads where tunnel = 1 and type in ('path',
+            'cycleway', 'ski', 'steps', 'bridleway')
+          union all
+          select geometry, osm_id, oneway, layer, type, 'major_rail' as class from
+            osm_roads where tunnel = 1 and type in ('rail',
+            'monorail', 'narrow_gauge', 'subway', 'tram')
+          union all
+          select geometry, osm_id, oneway, layer, type, 'minor_rail' as class from
+            osm_roads where tunnel = 1 and type in ('funicular',
+            'light_rail', 'preserved')
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      osm_id: Number
+      oneway: Number
+      layer: Number
+      class: String
+      type: String
+    properties: 
+      "buffer-size": 8
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+
   - id: landuse_overlay
     Datasource: 
       dbname: osm_tanzania
