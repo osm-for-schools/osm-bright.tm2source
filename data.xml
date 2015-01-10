@@ -123,38 +123,41 @@
        <Parameter name="port"><![CDATA[5432]]></Parameter>
        <Parameter name="table"><![CDATA[(
           select geometry, osm_id, oneway, type, 'motorway' as class from
-            osm_roads where type in ('motorway')
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway')
           union all
           select geometry, osm_id, oneway, type, 'motorway_link' as class from
-            osm_roads where type in ('motorway_link')
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway_link')
           union all
           select geometry, osm_id, oneway, type, 'main' as class from
-            osm_roads where type in ('primary', 'primary_link',
-            'secondary', 'secondary_link', 'tertiary', 'tertiary_link',
-            'trunk', 'trunk_link')
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('primary',
+            'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'trunk', 'trunk_link')
           union all
           select geometry, osm_id, oneway, type, 'street' as class from
-            osm_roads where type in ('residential', 'unclassified', 'living_street')
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('residential',
+            'unclassified', 'living_street')
           union all
           select geometry, osm_id, oneway, type, 'street_limited' as class from
-            osm_roads where type in ('pedestrian', 'construction') or access = 'private'
+            osm_roads where bridge = 0 and tunnel = 0 and (type in ('pedestrian',
+            'construction') or access = 'private')
           union all
           select geometry, osm_id, oneway, type, 'service' as class from
-            osm_roads where type in ('service', 'track')
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('service',
+            'track')
           union all
           select geometry, osm_id, oneway, type, 'driveway' as class from
-            osm_roads where type in ('driveway')
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('driveway')
           union all
           select geometry, osm_id, oneway, type, 'path' as class from
-            osm_roads where type in ('path', 'cycleway', 'ski', 'steps',
-            'bridleway')
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('path',
+            'cycleway', 'ski', 'steps', 'bridleway')
           union all
           select geometry, osm_id, oneway, type, 'major_rail' as class from
-            osm_roads where type in ('rail', 'monorail', 'narrow_gauge',
-            'subway', 'tram')
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('rail',
+            'monorail', 'narrow_gauge', 'subway', 'tram')
           union all
           select geometry, osm_id, oneway, type, 'minor_rail' as class from
-            osm_roads where type in ('funicular', 'light_rail', 'preserved')
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('funicular',
+            'light_rail', 'preserved')
           /* TODO aerialway, golf */
           ) AS data]]></Parameter>
        <Parameter name="type"><![CDATA[postgis]]></Parameter>
