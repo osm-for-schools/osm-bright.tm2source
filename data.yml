@@ -416,6 +416,36 @@ Layer:
     properties: 
       "buffer-size": 8
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: state_label
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          /* TODO get real name_en/name_de/name_es */
+          /* TODO get real area */
+          select geometry, osm_id, name, name as name_en, 0 as area from osm_places
+            where type = 'state'
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      id: Number
+      name: String
+      name_en: String
+      osm_id: Number
+      area: Number
+    properties: 
+      "buffer-size": 8
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
 
 maxzoom: 12
 minzoom: 0
