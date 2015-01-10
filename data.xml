@@ -13,7 +13,10 @@
     {"id":"landuse_overlay","description":"","fields":{"osm_id":"Number","class":"String"}},
     {"id":"water","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","type":"String","area":"Number"}},
     {"id":"admin","description":"osm_tanzania","fields":{"id":"Number","osm_id":"Number","name":"String","type":"String","admin_level":"Number"}},
-    {"id":"waterway","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","type":"String"}}]}]]></Parameter>
+    {"id":"waterway","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","type":"String"}}
+    {"id":"country_label","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","name_en":"String","scalerank":"Number"}}
+    ]}]]>
+  </Parameter>
   <Parameter name="maxzoom">6</Parameter>
   <Parameter name="minzoom">0</Parameter>
 </Parameters>
@@ -338,6 +341,52 @@
        <Parameter name="password"><![CDATA[postgres]]></Parameter>
        <Parameter name="port"><![CDATA[5432]]></Parameter>
        <Parameter name="table"><![CDATA[osm_waterways]]></Parameter>
+       <Parameter name="type"><![CDATA[postgis]]></Parameter>
+       <Parameter name="user"><![CDATA[postgres]]></Parameter>
+    </Datasource>
+  </Layer>
+
+<Layer name="country_label"
+  buffer-size="8"
+  srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
+    
+    <Datasource>
+       <Parameter name="dbname"><![CDATA[osm_tanzania]]></Parameter>
+       <Parameter name="extent"><![CDATA[-20037508.34,-20037508.34,20037508.34,20037508.34]]></Parameter>
+       <Parameter name="geometry_field"><![CDATA[]]></Parameter>
+       <Parameter name="geometry_table"><![CDATA[]]></Parameter>
+       <Parameter name="host"><![CDATA[localhost]]></Parameter>
+       <Parameter name="key_field"><![CDATA[]]></Parameter>
+       <Parameter name="max_size"><![CDATA[512]]></Parameter>
+       <Parameter name="password"><![CDATA[postgres]]></Parameter>
+       <Parameter name="port"><![CDATA[5432]]></Parameter>
+       <Parameter name="table"><![CDATA[(
+          /* TODO get real name_en/name_de/name_es */
+          /* TODO improve ranking */
+          select geometry, osm_id, name, name as name_en, 1 as rank from osm_places
+            where type = 'country' and
+            population >= 250000000
+          union all
+          select geometry, osm_id, name, name as name_en, 2 as rank from osm_places
+            where type = 'country' and
+            population >= 100000000 and population < 250000000
+          union all
+          select geometry, osm_id, name, name as name_en, 3 as rank from osm_places
+            where type = 'country' and
+            population >= 50000000 and population < 100000000
+          union all
+          select geometry, osm_id, name, name as name_en, 4 as rank from osm_places
+            where type = 'country' and
+            population >= 25000000 and population < 50000000
+          union all
+          select geometry, osm_id, name, name as name_en, 5 as rank from osm_places
+            where type = 'country' and
+            population >= 10000000 and population < 25000000
+          union all
+          select geometry, osm_id, name, name as name_en, 6 as rank from osm_places
+            where type = 'country' and
+            population < 10000000
+          ) AS data]]></Parameter>
        <Parameter name="type"><![CDATA[postgis]]></Parameter>
        <Parameter name="user"><![CDATA[postgres]]></Parameter>
     </Datasource>
