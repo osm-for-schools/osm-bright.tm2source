@@ -356,13 +356,15 @@ Layer:
       max_size: 512
       password: postgres
       port: 5432
-      table: osm_waterways
+      table: |-
+        (
+          select geometry, osm_id, type, type as class from osm_waterways
+        ) AS data
       type: postgis
       user: postgres
     description: ''
     fields: 
-      id: Number
-      name: String
+      class: String
       osm_id: Number
       type: String
     properties: 

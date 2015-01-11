@@ -13,7 +13,7 @@
     {"id":"landuse_overlay","description":"","fields":{"osm_id":"Number","class":"String"}},
     {"id":"water","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","type":"String","area":"Number"}},
     {"id":"admin","description":"osm_tanzania","fields":{"osm_id":"Number","maritime":"Number","disputed":"Number","admin_level":"Number"}},
-    {"id":"waterway","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","type":"String"}}
+    {"id":"waterway","description":"","fields":{"osm_id":"Number","class":"String","type":"String"}}
     {"id":"country_label","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","name_en":"String","scalerank":"Number"}}
     {"id":"state_label","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","name_en":"String","area":"Number"}}
     {"id":"place_label","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","name_en":"String","type":"String","capital":"Number","ldir":"String","localrank":"Number","scalerank":"Number"}}
@@ -345,7 +345,9 @@
        <Parameter name="max_size"><![CDATA[512]]></Parameter>
        <Parameter name="password"><![CDATA[postgres]]></Parameter>
        <Parameter name="port"><![CDATA[5432]]></Parameter>
-       <Parameter name="table"><![CDATA[osm_waterways]]></Parameter>
+       <Parameter name="table"><![CDATA[(
+          select geometry, osm_id, type, type as class from osm_waterways
+          ) AS data]]></Parameter>
        <Parameter name="type"><![CDATA[postgis]]></Parameter>
        <Parameter name="user"><![CDATA[postgres]]></Parameter>
     </Datasource>
