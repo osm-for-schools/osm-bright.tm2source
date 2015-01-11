@@ -500,9 +500,9 @@ Layer:
       port: 5432
       table: |-
         (
-          /* TODO only starting with zoom-level 8 */
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where z(!scale_denominator!) >= 8
         ) AS data
       type: postgis
       user: postgres

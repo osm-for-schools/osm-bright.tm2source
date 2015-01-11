@@ -473,9 +473,9 @@
        <Parameter name="password"><![CDATA[postgres]]></Parameter>
        <Parameter name="port"><![CDATA[5432]]></Parameter>
        <Parameter name="table"><![CDATA[(
-          /* TODO only starting with zoom-level 8 */
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where z(!scale_denominator!) >= 8
           ) AS data]]></Parameter>
        <Parameter name="type"><![CDATA[postgis]]></Parameter>
        <Parameter name="user"><![CDATA[postgres]]></Parameter>
