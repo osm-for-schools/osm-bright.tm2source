@@ -18,6 +18,7 @@
     {"id":"state_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","area":"Number"}}
     {"id":"place_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","type":"String","capital":"Number","ldir":"String","localrank":"Number","scalerank":"Number"}}
     {"id":"water_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","area":"Number"}}
+    {"id":"waterway_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","class":"String","type":"String"}}
     ]}]]>
   </Parameter>
   <Parameter name="maxzoom">6</Parameter>
@@ -350,6 +351,7 @@
        <Parameter name="port"><![CDATA[5432]]></Parameter>
        <Parameter name="table"><![CDATA[(
           select geometry, osm_id, type, type as class from osm_waterways
+            where z(!scale_denominator!) >= 8
           ) AS data]]></Parameter>
        <Parameter name="type"><![CDATA[postgis]]></Parameter>
        <Parameter name="user"><![CDATA[postgres]]></Parameter>
@@ -487,6 +489,30 @@
        <Parameter name="table"><![CDATA[(
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where z(!scale_denominator!) >= 8
+          ) AS data]]></Parameter>
+       <Parameter name="type"><![CDATA[postgis]]></Parameter>
+       <Parameter name="user"><![CDATA[postgres]]></Parameter>
+    </Datasource>
+  </Layer>
+
+<Layer name="waterway_label"
+  buffer-size="8"
+  srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
+    
+    <Datasource>
+       <Parameter name="dbname"><![CDATA[osm_tanzania]]></Parameter>
+       <Parameter name="extent"><![CDATA[-20037508.34,-20037508.34,20037508.34,20037508.34]]></Parameter>
+       <Parameter name="geometry_field"><![CDATA[]]></Parameter>
+       <Parameter name="geometry_table"><![CDATA[]]></Parameter>
+       <Parameter name="host"><![CDATA[localhost]]></Parameter>
+       <Parameter name="key_field"><![CDATA[]]></Parameter>
+       <Parameter name="max_size"><![CDATA[512]]></Parameter>
+       <Parameter name="password"><![CDATA[postgres]]></Parameter>
+       <Parameter name="port"><![CDATA[5432]]></Parameter>
+       <Parameter name="table"><![CDATA[(
+          select geometry, osm_id,
+            name, name as name_en, type, type as class from osm_waterareas
             where z(!scale_denominator!) >= 8
           ) AS data]]></Parameter>
        <Parameter name="type"><![CDATA[postgis]]></Parameter>
