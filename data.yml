@@ -463,14 +463,26 @@ Layer:
         (
           /* TODO get real name_en/name_de/name_es */
           /* TODO calculate real ranks */
-          /* TODO towns only starting with zoom-level 7 */
-          /* TODO villages only starting with zoom-level 10 */
-          /* TODO suburb/hamlet? only starting with zoom-level 12 */
           select geometry, osm_id, name, name as name_en, type,
             null as capital, null as ldir, 1 as localrank, null as scalerank
             from osm_places
-            where type in ('city', 'town', 'village', 'hamlet', 'suburb',
-            'neighbourhood')
+            where type = 'city'
+          union all
+          select geometry, osm_id, name, name as name_en, type,
+            null as capital, null as ldir, 1 as localrank, null as scalerank
+            from osm_places
+            where type = 'town' and z(!scale_denominator!) >= 7
+          union all
+          select geometry, osm_id, name, name as name_en, type,
+            null as capital, null as ldir, 1 as localrank, null as scalerank
+            from osm_places
+            where type = 'village' and z(!scale_denominator!) >= 10
+          union all
+          select geometry, osm_id, name, name as name_en, type,
+            null as capital, null as ldir, 1 as localrank, null as scalerank
+            from osm_places
+            where type in ('hamlet', 'suburb','neighbourhood') and
+              z(!scale_denominator!) >= 12
         ) AS data
       type: postgis
       user: postgres
