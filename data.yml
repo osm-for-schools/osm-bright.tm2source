@@ -412,7 +412,6 @@ Layer:
       user: postgres
     description: ''
     fields: 
-      id: Number
       name: String
       name_en: String
       osm_id: Number
@@ -442,7 +441,6 @@ Layer:
       user: postgres
     description: ''
     fields: 
-      id: Number
       name: String
       name_en: String
       osm_id: Number
@@ -464,7 +462,10 @@ Layer:
       table: |-
         (
           /* TODO get real name_en/name_de/name_es */
-          /* TODO get real ranks */
+          /* TODO calculate real ranks */
+          /* TODO towns only starting with zoom-level 7 */
+          /* TODO villages only starting with zoom-level 10 */
+          /* TODO suburb/hamlet? only starting with zoom-level 12 */
           select geometry, osm_id, name, name as name_en, type,
             null as capital, null as ldir, 1 as localrank, null as scalerank
             from osm_places
@@ -475,7 +476,6 @@ Layer:
       user: postgres
     description: ''
     fields: 
-      id: Number
       name: String
       name_en: String
       osm_id: Number
@@ -486,6 +486,34 @@ Layer:
       scalerank: Number
     properties: 
       "buffer-size": 256
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: water_label
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          /* TODO only starting with zoom-level 8 */
+          select ST_PointOnSurface(geometry) as geometry, osm_id,
+            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      name: String
+      name_en: String
+      osm_id: Number
+      area: Number
+    properties: 
+      "buffer-size": 128
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
 
 maxzoom: 12
