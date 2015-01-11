@@ -19,7 +19,7 @@
     {"id":"place_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","type":"String","capital":"Number","ldir":"String","localrank":"Number","scalerank":"Number"}},
     {"id":"water_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","area":"Number"}},
     {"id":"waterway_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","class":"String","type":"String"}},
-    {"id":"poi_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","class":"String","maki":"String","scalerank":"Number"}}
+    {"id":"poi_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","class":"String","maki":"String","scalerank":"Number","localerank":"Number"}}
     ]}]]>
   </Parameter>
   <Parameter name="maxzoom">16</Parameter>
@@ -539,13 +539,14 @@
           /* TODO calculate real ranks */
           /* TODO improve assigning maki icon */
           select geometry, osm_id,
-            name, name as name_en, type, 3 as scalerank,
+            name, name as name_en, type, 3 as scalerank, 1 as localrank,
             (CASE WHEN replace(type, '_', '-') in ('airfield','london-underground','airport','marker','alcohol-shop','marker-stroked','america-football','minefield','art-gallery','mobilephone','bakery','monument','bank','museum','bar','music','baseball','oil-well','basketball','park2','beer','park','bicycle','parking','building','parking-garage','bus','pharmacy','cafe','pitch','camera','place-of-worship','campsite','playground','car','police','cemetery','polling-place','chemist','post','cinema','prison','circle','rail','circle-stroked','rail-above','city','rail-light','clothing-store','rail-metro','college','rail-underground','commercial','religious-christian','cricket','religious-jewish','cross','religious-muslim','dam','restaurant','danger','roadblock','disability','rocket','dog-park','school','embassy','scooter','emergency-telephone','shop','entrance','skiing','farm','slaughterhouse','fast-food','soccer','ferry','square','fire-station','square-stroked','fuel','star','garden','star-stroked','gift','suitcase','golf','swimming','grocery','telephone','hairdresser','tennis','harbor','theatre','heart','toilets','heliport','town','hospital','town-hall','ice-cream','triangle','industrial','triangle-stroked','land-use','village','laundry','warehouse','library','waste-basket','lighthouse','water','lodging','wetland','logging','zoo')
             THEN replace(type, '_', '-')
             ELSE null
             END) as maki
             from osm_amenities
             where z(!scale_denominator!) >= 16
+        ) AS data
           ) AS data]]></Parameter>
        <Parameter name="type"><![CDATA[postgis]]></Parameter>
        <Parameter name="user"><![CDATA[postgres]]></Parameter>
