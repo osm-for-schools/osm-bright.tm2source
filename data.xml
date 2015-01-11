@@ -443,24 +443,24 @@
        <Parameter name="port"><![CDATA[5432]]></Parameter>
        <Parameter name="table"><![CDATA[(
           /* TODO get real name_en/name_de/name_es */
-          /* TODO calculate real ranks */
+          /* TODO calculate real ranks and ldir */
           select geometry, osm_id, name, name as name_en, type,
-            null as capital, null as ldir, 1 as localrank, null as scalerank
+            null as capital, 'SE' as ldir, 1 as localrank, null as scalerank
             from osm_places
             where type = 'city'
           union all
           select geometry, osm_id, name, name as name_en, type,
-            null as capital, null as ldir, 1 as localrank, null as scalerank
+            null as capital, 'SE' as ldir, 1 as localrank, null as scalerank
             from osm_places
             where type = 'town' and z(!scale_denominator!) >= 7
           union all
           select geometry, osm_id, name, name as name_en, type,
-            null as capital, null as ldir, 1 as localrank, null as scalerank
+            null as capital, 'SE' as ldir, 1 as localrank, null as scalerank
             from osm_places
             where type = 'village' and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, name, name as name_en, type,
-            null as capital, null as ldir, 1 as localrank, null as scalerank
+            null as capital, 'SE' as ldir, 1 as localrank, null as scalerank
             from osm_places
             where type in ('hamlet', 'suburb','neighbourhood') and
               z(!scale_denominator!) >= 12
