@@ -557,7 +557,45 @@ Layer:
     properties: 
       "buffer-size": 128
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: poi_label
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          /* TODO calculate real ranks */
+          /* TODO improve assigning maki icon */
+          select geometry, osm_id,
+            name, name as name_en, type, 3 as scalerank,
+            (CASE WHEN replace(type, '_', '-') in ('airfield','london-underground','airport','marker','alcohol-shop','marker-stroked','america-football','minefield','art-gallery','mobilephone','bakery','monument','bank','museum','bar','music','baseball','oil-well','basketball','park2','beer','park','bicycle','parking','building','parking-garage','bus','pharmacy','cafe','pitch','camera','place-of-worship','campsite','playground','car','police','cemetery','polling-place','chemist','post','cinema','prison','circle','rail','circle-stroked','rail-above','city','rail-light','clothing-store','rail-metro','college','rail-underground','commercial','religious-christian','cricket','religious-jewish','cross','religious-muslim','dam','restaurant','danger','roadblock','disability','rocket','dog-park','school','embassy','scooter','emergency-telephone','shop','entrance','skiing','farm','slaughterhouse','fast-food','soccer','ferry','square','fire-station','square-stroked','fuel','star','garden','star-stroked','gift','suitcase','golf','swimming','grocery','telephone','hairdresser','tennis','harbor','theatre','heart','toilets','heliport','town','hospital','town-hall','ice-cream','triangle','industrial','triangle-stroked','land-use','village','laundry','warehouse','library','waste-basket','lighthouse','water','lodging','wetland','logging','zoo')
+            THEN replace(type, '_', '-')
+            ELSE null
+            END) as maki
+            from osm_amenities
+            where z(!scale_denominator!) >= 16
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      name: String
+      name_en: String
+      osm_id: Number
+      type: String
+      maki: String
+      scalerank: Number
+    properties: 
+      "buffer-size": 128
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
 
-maxzoom: 12
+
+maxzoom: 16
 minzoom: 0
 name: ''
