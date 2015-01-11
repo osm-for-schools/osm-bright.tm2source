@@ -11,7 +11,7 @@
     {"id":"tunnel","description":"","fields":{"osm_id":"Number","class":"String","oneway":"Number","layer":"Number","type":"String"}},
     {"id":"landuse","description":"","fields":{"osm_id":"Number","class":"String"}},
     {"id":"landuse_overlay","description":"","fields":{"osm_id":"Number","class":"String"}},
-    {"id":"water","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","type":"String","area":"Number"}},
+    {"id":"water","description":"","fields":{"osm_id":"Number"}},
     {"id":"admin","description":"osm_tanzania","fields":{"osm_id":"Number","maritime":"Number","disputed":"Number","admin_level":"Number"}},
     {"id":"waterway","description":"","fields":{"osm_id":"Number","class":"String","type":"String"}}
     {"id":"country_label","description":"","fields":{"id":"Number","osm_id":"Number","name":"String","name_en":"String","scalerank":"Number"}}
@@ -302,7 +302,9 @@
        <Parameter name="max_size"><![CDATA[512]]></Parameter>
        <Parameter name="password"><![CDATA[postgres]]></Parameter>
        <Parameter name="port"><![CDATA[5432]]></Parameter>
-       <Parameter name="table"><![CDATA[osm_waterareas]]></Parameter>
+       <Parameter name="table"><![CDATA[(
+          select geometry, osm_id from osm_waterareas
+          ) AS data]]></Parameter>
        <Parameter name="type"><![CDATA[postgis]]></Parameter>
        <Parameter name="user"><![CDATA[postgres]]></Parameter>
     </Datasource>
