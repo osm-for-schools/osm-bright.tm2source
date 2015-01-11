@@ -19,7 +19,8 @@
     {"id":"place_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","type":"String","capital":"Number","ldir":"String","localrank":"Number","scalerank":"Number"}},
     {"id":"water_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","area":"Number"}},
     {"id":"waterway_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","class":"String","type":"String"}},
-    {"id":"poi_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","class":"String","maki":"String","scalerank":"Number","localerank":"Number"}}
+    {"id":"poi_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","class":"String","maki":"String","scalerank":"Number","localerank":"Number"}},
+    {"id":"road_label","description":"","fields":{"osm_id":"Number","name":"String","name_en":"String","class":"String","ref":"String","reflen":"Number","len":"Number"}}
     ]}]]>
   </Parameter>
   <Parameter name="maxzoom">16</Parameter>
@@ -547,6 +548,80 @@
             from osm_amenities
             where z(!scale_denominator!) >= 16
         ) AS data
+          ) AS data]]></Parameter>
+       <Parameter name="type"><![CDATA[postgis]]></Parameter>
+       <Parameter name="user"><![CDATA[postgres]]></Parameter>
+    </Datasource>
+  </Layer>
+
+<Layer name="road_label"
+  buffer-size="8"
+  srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
+    
+    <Datasource>
+       <Parameter name="dbname"><![CDATA[osm_tanzania]]></Parameter>
+       <Parameter name="extent"><![CDATA[-20037508.34,-20037508.34,20037508.34,20037508.34]]></Parameter>
+       <Parameter name="geometry_field"><![CDATA[]]></Parameter>
+       <Parameter name="geometry_table"><![CDATA[]]></Parameter>
+       <Parameter name="host"><![CDATA[localhost]]></Parameter>
+       <Parameter name="key_field"><![CDATA[]]></Parameter>
+       <Parameter name="max_size"><![CDATA[512]]></Parameter>
+       <Parameter name="password"><![CDATA[postgres]]></Parameter>
+       <Parameter name="port"><![CDATA[5432]]></Parameter>
+       <Parameter name="table"><![CDATA[(
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'motorway' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('motorway')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'motorway_link' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('motorway_link')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'main' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('primary',
+            'primary_link', 'secondary', 'secondary_link', 'tertiary',
+            'tertiary_link', 'trunk', 'trunk_link')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'street' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('residential',
+            'unclassified', 'living_street')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'street_limited' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and (type in ('pedestrian',
+            'construction') or access = 'private')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'service' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('service',
+            'track')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'driveway' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('driveway')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'path' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('path',
+            'cycleway', 'ski', 'steps', 'bridleway')
           ) AS data]]></Parameter>
        <Parameter name="type"><![CDATA[postgis]]></Parameter>
        <Parameter name="user"><![CDATA[postgres]]></Parameter>

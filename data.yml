@@ -595,6 +595,87 @@ Layer:
     properties: 
       "buffer-size": 128
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: road_label
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'motorway' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('motorway')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'motorway_link' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('motorway_link')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'main' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('primary',
+            'primary_link', 'secondary', 'secondary_link', 'tertiary',
+            'tertiary_link', 'trunk', 'trunk_link')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'street' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('residential',
+            'unclassified', 'living_street')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'street_limited' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and (type in ('pedestrian',
+            'construction') or access = 'private')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'service' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('service',
+            'track')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'driveway' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('driveway')
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'path' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('path',
+            'cycleway', 'ski', 'steps', 'bridleway')
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      name: String
+      name_en: String
+      osm_id: Number
+      class: String
+      ref: String
+      reflen: Number
+      len: Number
+    properties: 
+      "buffer-size": 128
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
 
 
 maxzoom: 16
