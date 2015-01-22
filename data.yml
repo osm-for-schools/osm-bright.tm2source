@@ -276,9 +276,11 @@ Layer:
         (
           select geometry, osm_id, 'wetland' as class from osm_landusages
             where type in ('wetland', 'marsh', 'swamp')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'wetland_noveg' as class from osm_landusages
             where type in ('mud', 'tidalflat')
+            and z(!scale_denominator!) >= 10
         ) AS data
       type: postgis
       user: postgres
@@ -306,44 +308,61 @@ Layer:
           select geometry, osm_id, 'agriculture' as class from osm_landusages
             where type in ('farmland', 'farm', 'farmyard', 'orchard',
               'vineyard', 'plant_nursery')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'cemetery' as class from osm_landusages
             where type in ('cemetery')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'glacier' as class from osm_landusages
             where type in ('glacier')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'grass' as class from osm_landusages
             where type in ('grass', 'grassland', 'meadow', 'field')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'hospital' as class from osm_landusages
             where type in ('hospital')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'industrial' as class from osm_landusages
             where type in ('industrial', 'airport')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'park' as class from osm_landusages
-            where type in ('park', 'village_green', 'playground',
+            where type in (
               'nature_reserve', 'national_reserve', 'conservation',
               'national_park')
+              and z(!scale_denominator!) >= 7
+          union all
+          select geometry, osm_id, 'park' as class from osm_landusages
+            where type in ('park', 'village_green', 'playground')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'pitch' as class from osm_landusages
             where type in ('pitch', 'golf_course', 'recreation_ground', 'stadium')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'rock' as class from osm_landusages
             where type in ('rock', 'scree', 'quarry')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'sand' as class from osm_landusages
             where type in ('sand', 'beach', 'dune')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'school' as class from osm_landusages
             where type in ('school', 'university')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'scrub' as class from osm_landusages
             where type in ('scrub', 'heath', 'bush')
+            and z(!scale_denominator!) >= 10
           union all
           select geometry, osm_id, 'wood' as class from osm_landusages
             where type in ('wood', 'forest')
+            and z(!scale_denominator!) >= 7
         ) AS data
       type: postgis
       user: postgres
