@@ -26,40 +26,60 @@ Layer:
         (
           select geometry, osm_id, oneway, type, 'motorway' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway')
+            and z(!scale_denominator!) >= 5
           union all
           select geometry, osm_id, oneway, type, 'motorway_link' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway_link')
+            and z(!scale_denominator!) >= 13
           union all
           select geometry, osm_id, oneway, type, 'main' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('primary',
-            'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'trunk', 'trunk_link')
+            'primary_link', 'trunk', 'trunk_link')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id, oneway, type, 'main' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('secondary',
+            'secondary_link')
+            and z(!scale_denominator!) >= 9
+          union all
+          select geometry, osm_id, oneway, type, 'main' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('tertiary',
+            'tertiary_link')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, type, 'street' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('residential',
             'unclassified', 'living_street')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, type, 'street_limited' as class from
             osm_roads where bridge = 0 and tunnel = 0 and (type in ('pedestrian',
             'construction') or access = 'private')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, type, 'service' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('service',
             'track')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id, oneway, type, 'driveway' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('driveway')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id, oneway, type, 'path' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('path',
             'cycleway', 'ski', 'steps', 'bridleway')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id, oneway, type, 'major_rail' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('rail',
             'monorail', 'narrow_gauge', 'subway', 'tram')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, type, 'minor_rail' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('funicular',
             'light_rail', 'preserved')
+            and z(!scale_denominator!) >= 15
           /* TODO aerialway, golf */
         ) AS data
       type: postgis
@@ -89,40 +109,60 @@ Layer:
         (
           select geometry, osm_id, oneway, layer, type, 'motorway' as class from
             osm_roads where bridge = 1 and type in ('motorway')
+            and z(!scale_denominator!) >= 5
           union all
           select geometry, osm_id, oneway, layer, type, 'motorway_link' as class from
             osm_roads where bridge = 1 and type in ('motorway_link')
+            and z(!scale_denominator!) >= 13
           union all
           select geometry, osm_id, oneway, layer, type, 'main' as class from
             osm_roads where bridge = 1 and type in ('primary',
-            'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'trunk', 'trunk_link')
+            'primary_link', 'trunk', 'trunk_link')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where bridge = 1 and type in ('secondary',
+            'secondary_link')
+            and z(!scale_denominator!) >= 9
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where bridge = 1 and type in ('tertiary',
+            'tertiary_link')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, layer, type, 'street' as class from
             osm_roads where bridge = 1 and type in ('residential',
             'unclassified', 'living_street')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, layer, type, 'street_limited' as class from
             osm_roads where bridge = 1 and (type in ('pedestrian',
             'construction') or access = 'private')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, layer, type, 'service' as class from
             osm_roads where bridge = 1 and type in ('service',
             'track')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id, oneway, layer, type, 'driveway' as class from
             osm_roads where bridge = 1 and type in ('driveway')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id, oneway, layer, type, 'path' as class from
             osm_roads where bridge = 1 and type in ('path',
             'cycleway', 'ski', 'steps', 'bridleway')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id, oneway, layer, type, 'major_rail' as class from
             osm_roads where bridge = 1 and type in ('rail',
             'monorail', 'narrow_gauge', 'subway', 'tram')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, layer, type, 'minor_rail' as class from
             osm_roads where bridge = 1 and type in ('funicular',
             'light_rail', 'preserved')
+            and z(!scale_denominator!) >= 15
           /* TODO aerialway, golf */
         ) AS data
       type: postgis
@@ -153,40 +193,60 @@ Layer:
         (
           select geometry, osm_id, oneway, layer, type, 'motorway' as class from
             osm_roads where tunnel = 1 and type in ('motorway')
+            and z(!scale_denominator!) >= 5
           union all
           select geometry, osm_id, oneway, layer, type, 'motorway_link' as class from
             osm_roads where tunnel = 1 and type in ('motorway_link')
+            and z(!scale_denominator!) >= 13
           union all
           select geometry, osm_id, oneway, layer, type, 'main' as class from
             osm_roads where tunnel = 1 and type in ('primary',
-            'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'trunk', 'trunk_link')
+            'primary_link', 'trunk', 'trunk_link')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where tunnel = 1 and type in ('secondary',
+            'secondary_link')
+            and z(!scale_denominator!) >= 9
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where tunnel = 1 and type in ('tertiary',
+            'tertiary_link')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, layer, type, 'street' as class from
             osm_roads where tunnel = 1 and type in ('residential',
             'unclassified', 'living_street')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, layer, type, 'street_limited' as class from
             osm_roads where tunnel = 1 and (type in ('pedestrian',
             'construction') or access = 'private')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, layer, type, 'service' as class from
             osm_roads where tunnel = 1 and type in ('service',
             'track')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id, oneway, layer, type, 'driveway' as class from
             osm_roads where tunnel = 1 and type in ('driveway')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id, oneway, layer, type, 'path' as class from
             osm_roads where tunnel = 1 and type in ('path',
             'cycleway', 'ski', 'steps', 'bridleway')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id, oneway, layer, type, 'major_rail' as class from
             osm_roads where tunnel = 1 and type in ('rail',
             'monorail', 'narrow_gauge', 'subway', 'tram')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id, oneway, layer, type, 'minor_rail' as class from
             osm_roads where tunnel = 1 and type in ('funicular',
             'light_rail', 'preserved')
+            and z(!scale_denominator!) >= 15
         ) AS data
       type: postgis
       user: postgres
@@ -613,20 +673,38 @@ Layer:
             round(st_length(geometry)) as len, 'motorway' as class
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('motorway')
+            and z(!scale_denominator!) >= 5
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
             round(st_length(geometry)) as len, 'motorway_link' as class
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('motorway_link')
+            and z(!scale_denominator!) >= 13
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
             round(st_length(geometry)) as len, 'main' as class
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('primary',
-            'primary_link', 'secondary', 'secondary_link', 'tertiary',
-            'tertiary_link', 'trunk', 'trunk_link')
+            'primary_link', 'trunk', 'trunk_link')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'main' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('secondary',
+            'secondary_link')
+            and z(!scale_denominator!) >= 9
+          union all
+          select geometry, osm_id,
+            name, name as name_en, ref, char_length(ref) as reflen,
+            round(st_length(geometry)) as len, 'main' as class
+            from osm_roads
+            where bridge = 0 and tunnel = 0 and type in ('tertiary',
+            'tertiary_link')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -634,6 +712,7 @@ Layer:
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('residential',
             'unclassified', 'living_street')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -641,6 +720,7 @@ Layer:
             from osm_roads
             where bridge = 0 and tunnel = 0 and (type in ('pedestrian',
             'construction') or access = 'private')
+            and z(!scale_denominator!) >= 12
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -648,12 +728,14 @@ Layer:
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('service',
             'track')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
             round(st_length(geometry)) as len, 'driveway' as class
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('driveway')
+            and z(!scale_denominator!) >= 15
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -661,6 +743,7 @@ Layer:
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('path',
             'cycleway', 'ski', 'steps', 'bridleway')
+            and z(!scale_denominator!) >= 15
         ) AS data
       type: postgis
       user: postgres
