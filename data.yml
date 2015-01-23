@@ -639,6 +639,7 @@ Layer:
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('motorway')
             and z(!scale_denominator!) >= 5
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -646,6 +647,7 @@ Layer:
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('motorway_link')
             and z(!scale_denominator!) >= 13
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -654,6 +656,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and type in ('primary',
             'primary_link', 'trunk', 'trunk_link')
             and z(!scale_denominator!) >= 5
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -662,6 +665,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and type in ('secondary',
             'secondary_link')
             and z(!scale_denominator!) >= 9
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -670,6 +674,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and type in ('tertiary',
             'tertiary_link')
             and z(!scale_denominator!) >= 12
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -678,6 +683,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and type in ('residential',
             'unclassified', 'living_street')
             and z(!scale_denominator!) >= 12
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -686,6 +692,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and (type in ('pedestrian',
             'construction') or access = 'private')
             and z(!scale_denominator!) >= 12
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -694,6 +701,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and type in ('service',
             'track')
             and z(!scale_denominator!) >= 15
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -701,6 +709,7 @@ Layer:
             from osm_roads
             where bridge = 0 and tunnel = 0 and type in ('driveway')
             and z(!scale_denominator!) >= 15
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -709,6 +718,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and type in ('path',
             'cycleway', 'ski', 'steps', 'bridleway')
             and z(!scale_denominator!) >= 15
+            and linelabel(z(!scale_denominator!), name, geometry)
         ) AS data
       type: postgis
       user: postgres
@@ -741,16 +751,19 @@ Layer:
             name, name as name_en, type, type as class from osm_waterareas
             where type in ('river', 'canal')
             and z(!scale_denominator!) >= 8
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, type, type as class from osm_waterareas
             where type in ('stream', 'stream_intermittent')
             and z(!scale_denominator!) >= 13
+            and linelabel(z(!scale_denominator!), name, geometry)
           union all
           select geometry, osm_id,
             name, name as name_en, type, type as class from osm_waterareas
             where type in ('drain', 'ditch')
             and z(!scale_denominator!) >= 15
+            and linelabel(z(!scale_denominator!), name, geometry)
         ) AS data
       type: postgis
       user: postgres
