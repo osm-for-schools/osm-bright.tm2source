@@ -474,7 +474,14 @@ Layer:
       table: |-
         (
           /* TODO calculate maritime */
-          select geometry, osm_id, admin_level, 0 as disputed, 0 as maritime from osm_admin
+          select geometry, osm_id, admin_level, 0 as disputed, 0 as maritime
+            from osm_admin
+            where admin_level = 2
+          union all
+          select geometry, osm_id, admin_level, 0 as disputed, 0 as maritime
+            from osm_admin
+            where admin_level = 4
+            and z(!scale_denominator!) >= 5
         ) AS data
       type: postgis
       user: postgres
@@ -633,7 +640,7 @@ Layer:
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, ST_Area(geometry) as area from osm_waterareas
             where st_area(geometry) >= 5000000000
-            and z(!scale_denominator!) >= 3
+            and z(!scale_denominator!) >= 5
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, ST_Area(geometry) as area from osm_waterareas
