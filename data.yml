@@ -439,7 +439,16 @@ Layer:
       table: |-
         (
           select geometry, osm_id, type, type as class from osm_waterways
-            where z(!scale_denominator!) >= 8
+            where type in ('river', 'canal')
+            and z(!scale_denominator!) >= 8
+          union all
+          select geometry, osm_id, type, type as class from osm_waterways
+            where type in ('stream', 'stream_intermittent')
+            and z(!scale_denominator!) >= 13
+          union all
+          select geometry, osm_id, type, type as class from osm_waterways
+            where type in ('drain', 'ditch')
+            and z(!scale_denominator!) >= 15
         ) AS data
       type: postgis
       user: postgres
@@ -687,7 +696,18 @@ Layer:
         (
           select geometry, osm_id,
             name, name as name_en, type, type as class from osm_waterareas
-            where z(!scale_denominator!) >= 8
+            where type in ('river', 'canal')
+            and z(!scale_denominator!) >= 8
+          union all
+          select geometry, osm_id,
+            name, name as name_en, type, type as class from osm_waterareas
+            where type in ('stream', 'stream_intermittent')
+            and z(!scale_denominator!) >= 13
+          union all
+          select geometry, osm_id,
+            name, name as name_en, type, type as class from osm_waterareas
+            where type in ('drain', 'ditch')
+            and z(!scale_denominator!) >= 15
         ) AS data
       type: postgis
       user: postgres
