@@ -11,287 +11,6 @@ center:
   - 6
 description: ''
 Layer: 
-  - id: road
-    Datasource: 
-      dbname: osm_tanzania
-      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
-      geometry_field: ''
-      geometry_table: ''
-      host: localhost
-      key_field: ''
-      max_size: 512
-      password: postgres
-      port: 5432
-      table: |-
-        (
-          select geometry, osm_id, oneway, type, 'motorway' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway')
-            and z(!scale_denominator!) >= 5
-          union all
-          select geometry, osm_id, oneway, type, 'motorway_link' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway_link')
-            and z(!scale_denominator!) >= 13
-          union all
-          select geometry, osm_id, oneway, type, 'main' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('primary',
-            'primary_link', 'trunk', 'trunk_link')
-            and z(!scale_denominator!) >= 5
-          union all
-          select geometry, osm_id, oneway, type, 'main' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('secondary',
-            'secondary_link')
-            and z(!scale_denominator!) >= 9
-          union all
-          select geometry, osm_id, oneway, type, 'main' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('tertiary',
-            'tertiary_link')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, type, 'street' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('residential',
-            'unclassified', 'living_street')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, type, 'street_limited' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and (type in ('pedestrian',
-            'construction') or access = 'private')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, type, 'service' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('service',
-            'track')
-            and z(!scale_denominator!) >= 15
-          union all
-          select geometry, osm_id, oneway, type, 'driveway' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('driveway')
-            and z(!scale_denominator!) >= 15
-          union all
-          select geometry, osm_id, oneway, type, 'path' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('path',
-            'cycleway', 'ski', 'steps', 'bridleway')
-            and z(!scale_denominator!) >= 15
-          union all
-          select geometry, osm_id, oneway, type, 'major_rail' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('rail',
-            'monorail', 'narrow_gauge', 'subway', 'tram')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, type, 'minor_rail' as class from
-            osm_roads where bridge = 0 and tunnel = 0 and type in ('funicular',
-            'light_rail', 'preserved')
-            and z(!scale_denominator!) >= 15
-          /* TODO aerialway, golf */
-        ) AS data
-      type: postgis
-      user: postgres
-    description: ''
-    fields: 
-      osm_id: Number
-      oneway: Number
-      class: String
-      type: String
-    properties: 
-      "buffer-size": 8
-    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
-
-  - id: bridge
-    Datasource: 
-      dbname: osm_tanzania
-      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
-      geometry_field: ''
-      geometry_table: ''
-      host: localhost
-      key_field: ''
-      max_size: 512
-      password: postgres
-      port: 5432
-      table: |-
-        (
-          select geometry, osm_id, oneway, layer, type, 'motorway' as class from
-            osm_roads where bridge = 1 and type in ('motorway')
-            and z(!scale_denominator!) >= 5
-          union all
-          select geometry, osm_id, oneway, layer, type, 'motorway_link' as class from
-            osm_roads where bridge = 1 and type in ('motorway_link')
-            and z(!scale_denominator!) >= 13
-          union all
-          select geometry, osm_id, oneway, layer, type, 'main' as class from
-            osm_roads where bridge = 1 and type in ('primary',
-            'primary_link', 'trunk', 'trunk_link')
-            and z(!scale_denominator!) >= 5
-          union all
-          select geometry, osm_id, oneway, layer, type, 'main' as class from
-            osm_roads where bridge = 1 and type in ('secondary',
-            'secondary_link')
-            and z(!scale_denominator!) >= 9
-          union all
-          select geometry, osm_id, oneway, layer, type, 'main' as class from
-            osm_roads where bridge = 1 and type in ('tertiary',
-            'tertiary_link')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, layer, type, 'street' as class from
-            osm_roads where bridge = 1 and type in ('residential',
-            'unclassified', 'living_street')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, layer, type, 'street_limited' as class from
-            osm_roads where bridge = 1 and (type in ('pedestrian',
-            'construction') or access = 'private')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, layer, type, 'service' as class from
-            osm_roads where bridge = 1 and type in ('service',
-            'track')
-            and z(!scale_denominator!) >= 15
-          union all
-          select geometry, osm_id, oneway, layer, type, 'driveway' as class from
-            osm_roads where bridge = 1 and type in ('driveway')
-            and z(!scale_denominator!) >= 15
-          union all
-          select geometry, osm_id, oneway, layer, type, 'path' as class from
-            osm_roads where bridge = 1 and type in ('path',
-            'cycleway', 'ski', 'steps', 'bridleway')
-            and z(!scale_denominator!) >= 15
-          union all
-          select geometry, osm_id, oneway, layer, type, 'major_rail' as class from
-            osm_roads where bridge = 1 and type in ('rail',
-            'monorail', 'narrow_gauge', 'subway', 'tram')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, layer, type, 'minor_rail' as class from
-            osm_roads where bridge = 1 and type in ('funicular',
-            'light_rail', 'preserved')
-            and z(!scale_denominator!) >= 15
-          /* TODO aerialway, golf */
-        ) AS data
-      type: postgis
-      user: postgres
-    description: ''
-    fields: 
-      osm_id: Number
-      oneway: Number
-      layer: Number
-      class: String
-      type: String
-    properties: 
-      "buffer-size": 8
-    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
-
-  - id: tunnel
-    Datasource: 
-      dbname: osm_tanzania
-      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
-      geometry_field: ''
-      geometry_table: ''
-      host: localhost
-      key_field: ''
-      max_size: 512
-      password: postgres
-      port: 5432
-      table: |-
-        (
-          select geometry, osm_id, oneway, layer, type, 'motorway' as class from
-            osm_roads where tunnel = 1 and type in ('motorway')
-            and z(!scale_denominator!) >= 5
-          union all
-          select geometry, osm_id, oneway, layer, type, 'motorway_link' as class from
-            osm_roads where tunnel = 1 and type in ('motorway_link')
-            and z(!scale_denominator!) >= 13
-          union all
-          select geometry, osm_id, oneway, layer, type, 'main' as class from
-            osm_roads where tunnel = 1 and type in ('primary',
-            'primary_link', 'trunk', 'trunk_link')
-            and z(!scale_denominator!) >= 5
-          union all
-          select geometry, osm_id, oneway, layer, type, 'main' as class from
-            osm_roads where tunnel = 1 and type in ('secondary',
-            'secondary_link')
-            and z(!scale_denominator!) >= 9
-          union all
-          select geometry, osm_id, oneway, layer, type, 'main' as class from
-            osm_roads where tunnel = 1 and type in ('tertiary',
-            'tertiary_link')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, layer, type, 'street' as class from
-            osm_roads where tunnel = 1 and type in ('residential',
-            'unclassified', 'living_street')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, layer, type, 'street_limited' as class from
-            osm_roads where tunnel = 1 and (type in ('pedestrian',
-            'construction') or access = 'private')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, layer, type, 'service' as class from
-            osm_roads where tunnel = 1 and type in ('service',
-            'track')
-            and z(!scale_denominator!) >= 15
-          union all
-          select geometry, osm_id, oneway, layer, type, 'driveway' as class from
-            osm_roads where tunnel = 1 and type in ('driveway')
-            and z(!scale_denominator!) >= 15
-          union all
-          select geometry, osm_id, oneway, layer, type, 'path' as class from
-            osm_roads where tunnel = 1 and type in ('path',
-            'cycleway', 'ski', 'steps', 'bridleway')
-            and z(!scale_denominator!) >= 15
-          union all
-          select geometry, osm_id, oneway, layer, type, 'major_rail' as class from
-            osm_roads where tunnel = 1 and type in ('rail',
-            'monorail', 'narrow_gauge', 'subway', 'tram')
-            and z(!scale_denominator!) >= 12
-          union all
-          select geometry, osm_id, oneway, layer, type, 'minor_rail' as class from
-            osm_roads where tunnel = 1 and type in ('funicular',
-            'light_rail', 'preserved')
-            and z(!scale_denominator!) >= 15
-        ) AS data
-      type: postgis
-      user: postgres
-    description: ''
-    fields: 
-      osm_id: Number
-      oneway: Number
-      layer: Number
-      class: String
-      type: String
-    properties: 
-      "buffer-size": 8
-    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
-
-  - id: landuse_overlay
-    Datasource: 
-      dbname: osm_tanzania
-      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
-      geometry_field: ''
-      geometry_table: ''
-      host: localhost
-      key_field: ''
-      max_size: 512
-      password: postgres
-      port: 5432
-      table: |-
-        (
-          select geometry, osm_id, 'wetland' as class from osm_landusages
-            where type in ('wetland', 'marsh', 'swamp')
-            and z(!scale_denominator!) >= 10
-          union all
-          select geometry, osm_id, 'wetland_noveg' as class from osm_landusages
-            where type in ('mud', 'tidalflat')
-            and z(!scale_denominator!) >= 10
-        ) AS data
-      type: postgis
-      user: postgres
-    description: ''
-    fields: 
-      osm_id: Number
-      class: String
-    properties: 
-      "buffer-size": 8
-    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
-
   - id: landuse
     Datasource: 
       dbname: osm_tanzania
@@ -368,8 +87,8 @@ Layer:
       user: postgres
     description: ''
     fields: 
-      osm_id: Number
       class: String
+      osm_id: Number
     properties: 
       "buffer-size": 8
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
@@ -460,6 +179,283 @@ Layer:
     properties: 
       "buffer-size": 8
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: landuse_overlay
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          select geometry, osm_id, 'wetland' as class from osm_landusages
+            where type in ('wetland', 'marsh', 'swamp')
+            and z(!scale_denominator!) >= 10
+          union all
+          select geometry, osm_id, 'wetland_noveg' as class from osm_landusages
+            where type in ('mud', 'tidalflat')
+            and z(!scale_denominator!) >= 10
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      class: String
+      osm_id: Number
+    properties: 
+      "buffer-size": 8
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: road
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          select geometry, osm_id, oneway, type, 'motorway' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id, oneway, type, 'motorway_link' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway_link')
+            and z(!scale_denominator!) >= 13
+          union all
+          select geometry, osm_id, oneway, type, 'main' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('primary',
+            'primary_link', 'trunk', 'trunk_link')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id, oneway, type, 'main' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('secondary',
+            'secondary_link')
+            and z(!scale_denominator!) >= 9
+          union all
+          select geometry, osm_id, oneway, type, 'main' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('tertiary',
+            'tertiary_link')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, type, 'street' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('residential',
+            'unclassified', 'living_street')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, type, 'street_limited' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and (type in ('pedestrian',
+            'construction') or access = 'private')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, type, 'service' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('service',
+            'track')
+            and z(!scale_denominator!) >= 15
+          union all
+          select geometry, osm_id, oneway, type, 'driveway' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('driveway')
+            and z(!scale_denominator!) >= 15
+          union all
+          select geometry, osm_id, oneway, type, 'path' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('path',
+            'cycleway', 'ski', 'steps', 'bridleway')
+            and z(!scale_denominator!) >= 15
+          union all
+          select geometry, osm_id, oneway, type, 'major_rail' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('rail',
+            'monorail', 'narrow_gauge', 'subway', 'tram')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, type, 'minor_rail' as class from
+            osm_roads where bridge = 0 and tunnel = 0 and type in ('funicular',
+            'light_rail', 'preserved')
+            and z(!scale_denominator!) >= 15
+          /* TODO aerialway, golf */
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      class: String
+      oneway: Number
+      osm_id: Number
+      type: String
+    properties: 
+      "buffer-size": 8
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: bridge
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          select geometry, osm_id, oneway, layer, type, 'motorway' as class from
+            osm_roads where bridge = 1 and type in ('motorway')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id, oneway, layer, type, 'motorway_link' as class from
+            osm_roads where bridge = 1 and type in ('motorway_link')
+            and z(!scale_denominator!) >= 13
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where bridge = 1 and type in ('primary',
+            'primary_link', 'trunk', 'trunk_link')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where bridge = 1 and type in ('secondary',
+            'secondary_link')
+            and z(!scale_denominator!) >= 9
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where bridge = 1 and type in ('tertiary',
+            'tertiary_link')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, layer, type, 'street' as class from
+            osm_roads where bridge = 1 and type in ('residential',
+            'unclassified', 'living_street')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, layer, type, 'street_limited' as class from
+            osm_roads where bridge = 1 and (type in ('pedestrian',
+            'construction') or access = 'private')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, layer, type, 'service' as class from
+            osm_roads where bridge = 1 and type in ('service',
+            'track')
+            and z(!scale_denominator!) >= 15
+          union all
+          select geometry, osm_id, oneway, layer, type, 'driveway' as class from
+            osm_roads where bridge = 1 and type in ('driveway')
+            and z(!scale_denominator!) >= 15
+          union all
+          select geometry, osm_id, oneway, layer, type, 'path' as class from
+            osm_roads where bridge = 1 and type in ('path',
+            'cycleway', 'ski', 'steps', 'bridleway')
+            and z(!scale_denominator!) >= 15
+          union all
+          select geometry, osm_id, oneway, layer, type, 'major_rail' as class from
+            osm_roads where bridge = 1 and type in ('rail',
+            'monorail', 'narrow_gauge', 'subway', 'tram')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, layer, type, 'minor_rail' as class from
+            osm_roads where bridge = 1 and type in ('funicular',
+            'light_rail', 'preserved')
+            and z(!scale_denominator!) >= 15
+          /* TODO aerialway, golf */
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      class: String
+      layer: Number
+      oneway: Number
+      osm_id: Number
+      type: String
+    properties: 
+      "buffer-size": 8
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: tunnel
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          select geometry, osm_id, oneway, layer, type, 'motorway' as class from
+            osm_roads where tunnel = 1 and type in ('motorway')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id, oneway, layer, type, 'motorway_link' as class from
+            osm_roads where tunnel = 1 and type in ('motorway_link')
+            and z(!scale_denominator!) >= 13
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where tunnel = 1 and type in ('primary',
+            'primary_link', 'trunk', 'trunk_link')
+            and z(!scale_denominator!) >= 5
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where tunnel = 1 and type in ('secondary',
+            'secondary_link')
+            and z(!scale_denominator!) >= 9
+          union all
+          select geometry, osm_id, oneway, layer, type, 'main' as class from
+            osm_roads where tunnel = 1 and type in ('tertiary',
+            'tertiary_link')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, layer, type, 'street' as class from
+            osm_roads where tunnel = 1 and type in ('residential',
+            'unclassified', 'living_street')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, layer, type, 'street_limited' as class from
+            osm_roads where tunnel = 1 and (type in ('pedestrian',
+            'construction') or access = 'private')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, layer, type, 'service' as class from
+            osm_roads where tunnel = 1 and type in ('service',
+            'track')
+            and z(!scale_denominator!) >= 15
+          union all
+          select geometry, osm_id, oneway, layer, type, 'driveway' as class from
+            osm_roads where tunnel = 1 and type in ('driveway')
+            and z(!scale_denominator!) >= 15
+          union all
+          select geometry, osm_id, oneway, layer, type, 'path' as class from
+            osm_roads where tunnel = 1 and type in ('path',
+            'cycleway', 'ski', 'steps', 'bridleway')
+            and z(!scale_denominator!) >= 15
+          union all
+          select geometry, osm_id, oneway, layer, type, 'major_rail' as class from
+            osm_roads where tunnel = 1 and type in ('rail',
+            'monorail', 'narrow_gauge', 'subway', 'tram')
+            and z(!scale_denominator!) >= 12
+          union all
+          select geometry, osm_id, oneway, layer, type, 'minor_rail' as class from
+            osm_roads where tunnel = 1 and type in ('funicular',
+            'light_rail', 'preserved')
+            and z(!scale_denominator!) >= 15
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      class: String
+      layer: Number
+      oneway: Number
+      osm_id: Number
+      type: String
+    properties: 
+      "buffer-size": 8
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
   - id: admin
     Datasource: 
       dbname: osm_tanzania
@@ -489,8 +485,8 @@ Layer:
     fields: 
       admin_level: Number
       disputed: Number
-      osm_id: Number
       maritime: Number
+      osm_id: Number
     properties: 
       "buffer-size": 8
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
@@ -540,7 +536,7 @@ Layer:
       name: String
       name_en: String
       osm_id: Number
-      ranking: Number
+      rank: Number
     properties: 
       "buffer-size": 128
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
@@ -566,10 +562,10 @@ Layer:
       user: postgres
     description: ''
     fields: 
+      area: Number
       name: String
       name_en: String
       osm_id: Number
-      area: Number
     properties: 
       "buffer-size": 128
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
@@ -613,158 +609,16 @@ Layer:
       user: postgres
     description: ''
     fields: 
-      name: String
-      name_en: String
-      osm_id: Number
-      type: String
       capital: Number
       ldir: String
       localrank: Number
+      name: String
+      name_en: String
+      osm_id: Number
       scalerank: Number
+      type: String
     properties: 
       "buffer-size": 256
-    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
-  - id: water_label
-    Datasource: 
-      dbname: osm_tanzania
-      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
-      geometry_field: ''
-      geometry_table: ''
-      host: localhost
-      key_field: ''
-      max_size: 512
-      password: postgres
-      port: 5432
-      table: |-
-        (
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
-            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
-            where st_area(geometry) >= 5000000000
-            and z(!scale_denominator!) >= 5
-          union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
-            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
-            where st_area(geometry) < 5000000000 and st_area(geometry) >= 1500000000
-            and z(!scale_denominator!) >= 5
-          union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
-            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
-            where st_area(geometry) < 1500000000 and st_area(geometry) >= 500000000
-            and z(!scale_denominator!) >= 8
-          union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
-            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
-            where st_area(geometry) < 500000000 and st_area(geometry) >= 100000000
-            and z(!scale_denominator!) >= 9
-          union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
-            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
-            where st_area(geometry) < 100000000 and st_area(geometry) >= 40000000
-            and z(!scale_denominator!) >= 10
-          union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
-            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
-            where st_area(geometry) < 40000000 and st_area(geometry) >= 20000000
-            and z(!scale_denominator!) >= 11
-          union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
-            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
-            where st_area(geometry) < 20000000 and st_area(geometry) >= 10000000
-            and z(!scale_denominator!) >= 12
-          union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
-            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
-            where st_area(geometry) < 10000000
-            and z(!scale_denominator!) >= 13
-        ) AS data
-      type: postgis
-      user: postgres
-    description: ''
-    fields: 
-      name: String
-      name_en: String
-      osm_id: Number
-      area: Number
-    properties: 
-      "buffer-size": 128
-    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
-  - id: waterway_label
-    Datasource: 
-      dbname: osm_tanzania
-      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
-      geometry_field: ''
-      geometry_table: ''
-      host: localhost
-      key_field: ''
-      max_size: 512
-      password: postgres
-      port: 5432
-      table: |-
-        (
-          select geometry, osm_id,
-            name, name as name_en, type, type as class from osm_waterareas
-            where type in ('river', 'canal')
-            and z(!scale_denominator!) >= 8
-          union all
-          select geometry, osm_id,
-            name, name as name_en, type, type as class from osm_waterareas
-            where type in ('stream', 'stream_intermittent')
-            and z(!scale_denominator!) >= 13
-          union all
-          select geometry, osm_id,
-            name, name as name_en, type, type as class from osm_waterareas
-            where type in ('drain', 'ditch')
-            and z(!scale_denominator!) >= 15
-        ) AS data
-      type: postgis
-      user: postgres
-    description: ''
-    fields: 
-      name: String
-      name_en: String
-      osm_id: Number
-      type: String
-      class: String
-    properties: 
-      "buffer-size": 128
-    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
-  - id: poi_label
-    Datasource: 
-      dbname: osm_tanzania
-      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
-      geometry_field: ''
-      geometry_table: ''
-      host: localhost
-      key_field: ''
-      max_size: 512
-      password: postgres
-      port: 5432
-      table: |-
-        (
-          /* TODO calculate real ranks */
-          /* TODO improve assigning maki icon */
-          select geometry, osm_id,
-            name, name as name_en, type, 3 as scalerank, 1 as localrank,
-            (CASE WHEN replace(type, '_', '-') in ('airfield','london-underground','airport','marker','alcohol-shop','marker-stroked','america-football','minefield','art-gallery','mobilephone','bakery','monument','bank','museum','bar','music','baseball','oil-well','basketball','park2','beer','park','bicycle','parking','building','parking-garage','bus','pharmacy','cafe','pitch','camera','place-of-worship','campsite','playground','car','police','cemetery','polling-place','chemist','post','cinema','prison','circle','rail','circle-stroked','rail-above','city','rail-light','clothing-store','rail-metro','college','rail-underground','commercial','religious-christian','cricket','religious-jewish','cross','religious-muslim','dam','restaurant','danger','roadblock','disability','rocket','dog-park','school','embassy','scooter','emergency-telephone','shop','entrance','skiing','farm','slaughterhouse','fast-food','soccer','ferry','square','fire-station','square-stroked','fuel','star','garden','star-stroked','gift','suitcase','golf','swimming','grocery','telephone','hairdresser','tennis','harbor','theatre','heart','toilets','heliport','town','hospital','town-hall','ice-cream','triangle','industrial','triangle-stroked','land-use','village','laundry','warehouse','library','waste-basket','lighthouse','water','lodging','wetland','logging','zoo')
-            THEN replace(type, '_', '-')
-            ELSE null
-            END) as maki
-            from osm_amenities
-            where z(!scale_denominator!) >= 16
-        ) AS data
-      type: postgis
-      user: postgres
-    description: ''
-    fields: 
-      name: String
-      name_en: String
-      osm_id: Number
-      type: String
-      maki: String
-      scalerank: Number
-      localrank: Number
-    properties: 
-      "buffer-size": 128
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
   - id: road_label
     Datasource: 
@@ -860,18 +714,158 @@ Layer:
       user: postgres
     description: ''
     fields: 
+      class: String
+      len: Number
       name: String
       name_en: String
       osm_id: Number
-      class: String
       ref: String
       reflen: Number
-      len: Number
     properties: 
       "buffer-size": 128
     srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
-
-
+  - id: waterway_label
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          select geometry, osm_id,
+            name, name as name_en, type, type as class from osm_waterareas
+            where type in ('river', 'canal')
+            and z(!scale_denominator!) >= 8
+          union all
+          select geometry, osm_id,
+            name, name as name_en, type, type as class from osm_waterareas
+            where type in ('stream', 'stream_intermittent')
+            and z(!scale_denominator!) >= 13
+          union all
+          select geometry, osm_id,
+            name, name as name_en, type, type as class from osm_waterareas
+            where type in ('drain', 'ditch')
+            and z(!scale_denominator!) >= 15
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      class: String
+      name: String
+      name_en: String
+      osm_id: Number
+      type: String
+    properties: 
+      "buffer-size": 128
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: water_label
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          select ST_PointOnSurface(geometry) as geometry, osm_id,
+            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where st_area(geometry) >= 5000000000
+            and z(!scale_denominator!) >= 5
+          union all
+          select ST_PointOnSurface(geometry) as geometry, osm_id,
+            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where st_area(geometry) < 5000000000 and st_area(geometry) >= 1500000000
+            and z(!scale_denominator!) >= 5
+          union all
+          select ST_PointOnSurface(geometry) as geometry, osm_id,
+            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where st_area(geometry) < 1500000000 and st_area(geometry) >= 500000000
+            and z(!scale_denominator!) >= 8
+          union all
+          select ST_PointOnSurface(geometry) as geometry, osm_id,
+            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where st_area(geometry) < 500000000 and st_area(geometry) >= 100000000
+            and z(!scale_denominator!) >= 9
+          union all
+          select ST_PointOnSurface(geometry) as geometry, osm_id,
+            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where st_area(geometry) < 100000000 and st_area(geometry) >= 40000000
+            and z(!scale_denominator!) >= 10
+          union all
+          select ST_PointOnSurface(geometry) as geometry, osm_id,
+            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where st_area(geometry) < 40000000 and st_area(geometry) >= 20000000
+            and z(!scale_denominator!) >= 11
+          union all
+          select ST_PointOnSurface(geometry) as geometry, osm_id,
+            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where st_area(geometry) < 20000000 and st_area(geometry) >= 10000000
+            and z(!scale_denominator!) >= 12
+          union all
+          select ST_PointOnSurface(geometry) as geometry, osm_id,
+            name, name as name_en, ST_Area(geometry) as area from osm_waterareas
+            where st_area(geometry) < 10000000
+            and z(!scale_denominator!) >= 13
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      area: Number
+      name: String
+      name_en: String
+      osm_id: Number
+    properties: 
+      "buffer-size": 128
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
+  - id: poi_label
+    Datasource: 
+      dbname: osm_tanzania
+      extent: -20037508.34,-20037508.34,20037508.34,20037508.34
+      geometry_field: ''
+      geometry_table: ''
+      host: localhost
+      key_field: ''
+      max_size: 512
+      password: postgres
+      port: 5432
+      table: |-
+        (
+          /* TODO calculate real ranks */
+          /* TODO improve assigning maki icon */
+          select geometry, osm_id,
+            name, name as name_en, type, 3 as scalerank, 1 as localrank,
+            (CASE WHEN replace(type, '_', '-') in ('airfield','london-underground','airport','marker','alcohol-shop','marker-stroked','america-football','minefield','art-gallery','mobilephone','bakery','monument','bank','museum','bar','music','baseball','oil-well','basketball','park2','beer','park','bicycle','parking','building','parking-garage','bus','pharmacy','cafe','pitch','camera','place-of-worship','campsite','playground','car','police','cemetery','polling-place','chemist','post','cinema','prison','circle','rail','circle-stroked','rail-above','city','rail-light','clothing-store','rail-metro','college','rail-underground','commercial','religious-christian','cricket','religious-jewish','cross','religious-muslim','dam','restaurant','danger','roadblock','disability','rocket','dog-park','school','embassy','scooter','emergency-telephone','shop','entrance','skiing','farm','slaughterhouse','fast-food','soccer','ferry','square','fire-station','square-stroked','fuel','star','garden','star-stroked','gift','suitcase','golf','swimming','grocery','telephone','hairdresser','tennis','harbor','theatre','heart','toilets','heliport','town','hospital','town-hall','ice-cream','triangle','industrial','triangle-stroked','land-use','village','laundry','warehouse','library','waste-basket','lighthouse','water','lodging','wetland','logging','zoo')
+            THEN replace(type, '_', '-')
+            ELSE null
+            END) as maki
+            from osm_amenities
+            where z(!scale_denominator!) >= 16
+        ) AS data
+      type: postgis
+      user: postgres
+    description: ''
+    fields: 
+      localrank: Number
+      maki: String
+      name: String
+      name_en: String
+      osm_id: Number
+      scalerank: Number
+      type: String
+    properties: 
+      "buffer-size": 128
+    srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
 maxzoom: 16
 minzoom: 0
 name: ''
