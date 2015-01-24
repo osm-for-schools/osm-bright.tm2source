@@ -28,32 +28,39 @@ Layer:
             where type in ('farmland', 'farm', 'farmyard', 'orchard',
               'vineyard', 'plant_nursery')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'cemetery' as class from osm_landusages
             where type in ('cemetery')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'glacier' as class from osm_landusages
             where type in ('glacier')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'grass' as class from osm_landusages
             where type in ('grass', 'grassland', 'meadow', 'field')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'hospital' as class from osm_landusages
             where type in ('hospital')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'industrial' as class from osm_landusages
             where type in ('industrial', 'airport')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'park' as class from osm_landusages
             where type in (
               'nature_reserve', 'national_reserve', 'conservation',
               'national_park')
               and z(!scale_denominator!) >= 7
+              and geometry && !bbox!
           union all
           select geometry, osm_id, 'park' as class from osm_landusages
             where type in ('park', 'village_green', 'playground')
@@ -62,26 +69,32 @@ Layer:
           select geometry, osm_id, 'pitch' as class from osm_landusages
             where type in ('pitch', 'golf_course', 'recreation_ground', 'stadium')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'rock' as class from osm_landusages
             where type in ('rock', 'scree', 'quarry')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'sand' as class from osm_landusages
             where type in ('sand', 'beach', 'dune')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'school' as class from osm_landusages
             where type in ('school', 'university')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'scrub' as class from osm_landusages
             where type in ('scrub', 'heath', 'bush')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'wood' as class from osm_landusages
             where type in ('wood', 'forest')
             and z(!scale_denominator!) >= 7
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -107,50 +120,62 @@ Layer:
         (
           select geometry, osm_id from osm_waterareas
             where area >= 5000000000
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 5000000000 and area >= 1500000000
             and z(!scale_denominator!) >= 2
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 1500000000 and area >= 500000000
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 500000000 and area >= 100000000
             and z(!scale_denominator!) >= 6
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 100000000 and area >= 40000000
             and z(!scale_denominator!) >= 7
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 40000000 and area >= 20000000
             and z(!scale_denominator!) >= 8
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 20000000 and area >= 10000000
             and z(!scale_denominator!) >= 9
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 10000000 and area >= 5000000
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 5000000 and area >= 1000000
             and z(!scale_denominator!) >= 11
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 1000000 and area >= 500000
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 500000 and area >= 100000
             and z(!scale_denominator!) >= 13
+            and geometry && !bbox!
           union all
           select geometry, osm_id from osm_waterareas
             where area < 100000
             and z(!scale_denominator!) >= 14
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -176,14 +201,17 @@ Layer:
           select geometry, osm_id, type, type as class from osm_waterways
             where type in ('river', 'canal')
             and z(!scale_denominator!) >= 8
+            and geometry && !bbox!
           union all
           select geometry, osm_id, type, type as class from osm_waterways
             where type in ('stream', 'stream_intermittent')
             and z(!scale_denominator!) >= 13
+            and geometry && !bbox!
           union all
           select geometry, osm_id, type, type as class from osm_waterways
             where type in ('drain', 'ditch')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -211,10 +239,12 @@ Layer:
           select geometry, osm_id, 'wetland' as class from osm_landusages
             where type in ('wetland', 'marsh', 'swamp')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, 'wetland_noveg' as class from osm_landusages
             where type in ('mud', 'tidalflat')
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -241,59 +271,71 @@ Layer:
           select geometry, osm_id, oneway, type, 'motorway' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway')
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'motorway_link' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('motorway_link')
             and z(!scale_denominator!) >= 13
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'main' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('primary',
             'primary_link', 'trunk', 'trunk_link')
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'main' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('secondary',
             'secondary_link')
             and z(!scale_denominator!) >= 9
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'main' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('tertiary',
             'tertiary_link')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'street' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('residential',
             'unclassified', 'living_street')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'street_limited' as class from
             osm_roads where bridge = 0 and tunnel = 0 and (type in ('pedestrian',
             'construction') or access = 'private')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'service' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('service',
             'track')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'driveway' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('driveway')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'path' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('path',
             'cycleway', 'ski', 'steps', 'bridleway')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'major_rail' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('rail',
             'monorail', 'narrow_gauge', 'subway', 'tram')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, type, 'minor_rail' as class from
             osm_roads where bridge = 0 and tunnel = 0 and type in ('funicular',
             'light_rail', 'preserved')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           /* TODO aerialway, golf */
         ) AS data
       type: postgis
@@ -323,59 +365,71 @@ Layer:
           select geometry, osm_id, oneway, layer, type, 'motorway' as class from
             osm_roads where bridge = 1 and type in ('motorway')
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'motorway_link' as class from
             osm_roads where bridge = 1 and type in ('motorway_link')
             and z(!scale_denominator!) >= 13
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'main' as class from
             osm_roads where bridge = 1 and type in ('primary',
             'primary_link', 'trunk', 'trunk_link')
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'main' as class from
             osm_roads where bridge = 1 and type in ('secondary',
             'secondary_link')
             and z(!scale_denominator!) >= 9
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'main' as class from
             osm_roads where bridge = 1 and type in ('tertiary',
             'tertiary_link')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'street' as class from
             osm_roads where bridge = 1 and type in ('residential',
             'unclassified', 'living_street')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'street_limited' as class from
             osm_roads where bridge = 1 and (type in ('pedestrian',
             'construction') or access = 'private')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'service' as class from
             osm_roads where bridge = 1 and type in ('service',
             'track')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'driveway' as class from
             osm_roads where bridge = 1 and type in ('driveway')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'path' as class from
             osm_roads where bridge = 1 and type in ('path',
             'cycleway', 'ski', 'steps', 'bridleway')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'major_rail' as class from
             osm_roads where bridge = 1 and type in ('rail',
             'monorail', 'narrow_gauge', 'subway', 'tram')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'minor_rail' as class from
             osm_roads where bridge = 1 and type in ('funicular',
             'light_rail', 'preserved')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           /* TODO aerialway, golf */
         ) AS data
       type: postgis
@@ -406,59 +460,71 @@ Layer:
           select geometry, osm_id, oneway, layer, type, 'motorway' as class from
             osm_roads where tunnel = 1 and type in ('motorway')
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'motorway_link' as class from
             osm_roads where tunnel = 1 and type in ('motorway_link')
             and z(!scale_denominator!) >= 13
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'main' as class from
             osm_roads where tunnel = 1 and type in ('primary',
             'primary_link', 'trunk', 'trunk_link')
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'main' as class from
             osm_roads where tunnel = 1 and type in ('secondary',
             'secondary_link')
             and z(!scale_denominator!) >= 9
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'main' as class from
             osm_roads where tunnel = 1 and type in ('tertiary',
             'tertiary_link')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'street' as class from
             osm_roads where tunnel = 1 and type in ('residential',
             'unclassified', 'living_street')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'street_limited' as class from
             osm_roads where tunnel = 1 and (type in ('pedestrian',
             'construction') or access = 'private')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'service' as class from
             osm_roads where tunnel = 1 and type in ('service',
             'track')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'driveway' as class from
             osm_roads where tunnel = 1 and type in ('driveway')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'path' as class from
             osm_roads where tunnel = 1 and type in ('path',
             'cycleway', 'ski', 'steps', 'bridleway')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'major_rail' as class from
             osm_roads where tunnel = 1 and type in ('rail',
             'monorail', 'narrow_gauge', 'subway', 'tram')
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select geometry, osm_id, oneway, layer, type, 'minor_rail' as class from
             osm_roads where tunnel = 1 and type in ('funicular',
             'light_rail', 'preserved')
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -489,11 +555,13 @@ Layer:
           select geometry, osm_id, admin_level, 0 as disputed, 0 as maritime
             from osm_admin
             where admin_level = 2
+            and geometry && !bbox!
           union all
           select geometry, osm_id, admin_level, 0 as disputed, 0 as maritime
             from osm_admin
             where admin_level = 4
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -524,26 +592,32 @@ Layer:
           select geometry, osm_id, name, name as name_en, 1 as rank from osm_places
             where type = 'country' and
             population >= 250000000
+            and geometry && !bbox!
           union all
           select geometry, osm_id, name, name as name_en, 2 as rank from osm_places
             where type = 'country' and
             population >= 100000000 and population < 250000000
+            and geometry && !bbox!
           union all
           select geometry, osm_id, name, name as name_en, 3 as rank from osm_places
             where type = 'country' and
             population >= 50000000 and population < 100000000
+            and geometry && !bbox!
           union all
           select geometry, osm_id, name, name as name_en, 4 as rank from osm_places
             where type = 'country' and
             population >= 25000000 and population < 50000000
+            and geometry && !bbox!
           union all
           select geometry, osm_id, name, name as name_en, 5 as rank from osm_places
             where type = 'country' and
             population >= 10000000 and population < 25000000
+            and geometry && !bbox!
           union all
           select geometry, osm_id, name, name as name_en, 6 as rank from osm_places
             where type = 'country' and
             population < 10000000
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -573,6 +647,7 @@ Layer:
           /* TODO get real area */
           select geometry, osm_id, name, name as name_en, 0 as area from osm_places
             where type = 'state'
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -604,22 +679,26 @@ Layer:
             null as capital, 'SE' as ldir, 1 as localrank, null as scalerank
             from osm_places
             where type = 'city'
+            and geometry && !bbox!
           union all
           select geometry, osm_id, name, name as name_en, type,
             null as capital, 'SE' as ldir, 1 as localrank, null as scalerank
             from osm_places
             where type = 'town' and z(!scale_denominator!) >= 7
+            and geometry && !bbox!
           union all
           select geometry, osm_id, name, name as name_en, type,
             null as capital, 'SE' as ldir, 1 as localrank, null as scalerank
             from osm_places
             where type = 'village' and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select geometry, osm_id, name, name as name_en, type,
             null as capital, 'SE' as ldir, 1 as localrank, null as scalerank
             from osm_places
             where type in ('hamlet', 'suburb','neighbourhood') and
               z(!scale_denominator!) >= 12
+              and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -656,6 +735,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and type in ('motorway')
             and z(!scale_denominator!) >= 5
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -664,6 +744,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and type in ('motorway_link')
             and z(!scale_denominator!) >= 13
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -673,6 +754,7 @@ Layer:
             'primary_link', 'trunk', 'trunk_link')
             and z(!scale_denominator!) >= 5
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -682,6 +764,7 @@ Layer:
             'secondary_link')
             and z(!scale_denominator!) >= 9
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -691,6 +774,7 @@ Layer:
             'tertiary_link')
             and z(!scale_denominator!) >= 12
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -700,6 +784,7 @@ Layer:
             'unclassified', 'living_street')
             and z(!scale_denominator!) >= 12
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -709,6 +794,7 @@ Layer:
             'construction') or access = 'private')
             and z(!scale_denominator!) >= 12
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -718,6 +804,7 @@ Layer:
             'track')
             and z(!scale_denominator!) >= 15
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -726,6 +813,7 @@ Layer:
             where bridge = 0 and tunnel = 0 and type in ('driveway')
             and z(!scale_denominator!) >= 15
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, ref, char_length(ref) as reflen,
@@ -735,6 +823,7 @@ Layer:
             'cycleway', 'ski', 'steps', 'bridleway')
             and z(!scale_denominator!) >= 15
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -768,18 +857,21 @@ Layer:
             where type in ('river', 'canal')
             and z(!scale_denominator!) >= 8
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, type, type as class from osm_waterareas
             where type in ('stream', 'stream_intermittent')
             and z(!scale_denominator!) >= 13
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
           union all
           select geometry, osm_id,
             name, name as name_en, type, type as class from osm_waterareas
             where type in ('drain', 'ditch')
             and z(!scale_denominator!) >= 15
             and linelabel(z(!scale_denominator!), name, geometry)
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -810,61 +902,73 @@ Layer:
             name, name as name_en, area from osm_waterareas
             where area >= 5000000000
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 5000000000 and area >= 1500000000
             and z(!scale_denominator!) >= 5
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 1500000000 and area >= 500000000
             and z(!scale_denominator!) >= 8
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 500000000 and area >= 100000000
             and z(!scale_denominator!) >= 9
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 100000000 and area >= 40000000
             and z(!scale_denominator!) >= 10
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 40000000 and area >= 20000000
             and z(!scale_denominator!) >= 11
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 20000000 and area >= 10000000
             and z(!scale_denominator!) >= 12
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 10000000 and area >= 5000000
             and z(!scale_denominator!) >= 13
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 5000000 and area >= 1000000
             and z(!scale_denominator!) >= 14
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 1000000 and area >= 500000
             and z(!scale_denominator!) >= 15
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 500000 and area >= 100000
             and z(!scale_denominator!) >= 16
+            and geometry && !bbox!
           union all
           select ST_PointOnSurface(geometry) as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 100000
             and z(!scale_denominator!) >= 17
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
@@ -900,6 +1004,7 @@ Layer:
             END) as maki
             from osm_amenities
             where z(!scale_denominator!) >= 16
+            and geometry && !bbox!
         ) AS data
       type: postgis
       user: postgres
