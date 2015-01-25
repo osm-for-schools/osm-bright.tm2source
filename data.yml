@@ -898,73 +898,73 @@ Layer:
       port: 5432
       table: |-
         (
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area >= 5000000000
             and z(!scale_denominator!) >= 5
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 5000000000 and area >= 1500000000
             and z(!scale_denominator!) >= 5
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 1500000000 and area >= 500000000
             and z(!scale_denominator!) >= 8
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 500000000 and area >= 100000000
             and z(!scale_denominator!) >= 9
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 100000000 and area >= 40000000
             and z(!scale_denominator!) >= 10
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 40000000 and area >= 20000000
             and z(!scale_denominator!) >= 11
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 20000000 and area >= 10000000
             and z(!scale_denominator!) >= 12
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 10000000 and area >= 5000000
             and z(!scale_denominator!) >= 13
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 5000000 and area >= 1000000
             and z(!scale_denominator!) >= 14
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 1000000 and area >= 500000
             and z(!scale_denominator!) >= 15
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 500000 and area >= 100000
             and z(!scale_denominator!) >= 16
             and geometry && !bbox!
           union all
-          select ST_PointOnSurface(geometry) as geometry, osm_id,
+          select point as geometry, osm_id,
             name, name as name_en, area from osm_waterareas
             where area < 100000
             and z(!scale_denominator!) >= 17
